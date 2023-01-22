@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require( "mongoose");
 
 const userschema = new mongoose.Schema({
     email: {
@@ -6,14 +6,13 @@ const userschema = new mongoose.Schema({
         required: true
     },
     password: {
-        type: Number,
+        type: String,
         required: true
     },
     tokens:[
         {
             token:{
                 type: String,
-                required: true
             }
         }
     ]
