@@ -42,6 +42,7 @@ cms/core/config/
 node_modules/
 
 
+config.env
 .env
 .env.example
 .env.local
