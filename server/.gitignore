@@ -1,49 +1,22 @@
-#################
-## Sublime Text
-#################
 
-*.sublime-project
-*.sublime-workspace
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
 
-#################
-## Images
-#################
+# testing
+/coverage
 
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.psd
-*.ai
+# production
+/build
 
-#################
-## Windows detritus
-#################
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Mac crap
+# misc
 .DS_Store
-
-#################
-## Directories
-#################
-
-dev/
-cms/core/config/
-node_modules/
-
-
-config.env
-.env
-.env.example
 .env.local
-.env.staging
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
