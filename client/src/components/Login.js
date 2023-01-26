@@ -14,6 +14,21 @@ const Login = () => {
             return {...preVal,[event.target.name]:event.target.value}
         })
     }
+
+	const submitData = async (event)=>{
+		event.preventDefault();
+		const {RollName,email,password} = data;
+	const res =	await fetch('/login',{
+			method:"post",
+			headers:{
+				"Content-Type": "application/json"
+			},
+			body:JSON.stringify({RollName,email,password})
+		})
+
+		const val = await res.json;
+	}
+
   return (
     <div className='my-login-page'>
     <section className="h-100">
@@ -32,9 +47,9 @@ const Login = () => {
 									<label htmlFor="Role">Role</label>
 									<select onChange={handleInput} defaultValue="0" value={data.RollName} className="form-select slt" name='RollName' id="myslt" aria-label="Default select example">
 										<option selected className="inside_text_role opt">--------------Role--------------</option>
-										<option value="1" className="opt">Police Officer</option>
-										<option value="2" className="opt">S.P</option>
-										<option value="3" className="opt">Nodal Officer</option>
+										<option value="Police Officer" className="opt">Police Officer</option>
+										<option value="S.P" className="opt">S.P</option>
+										<option value="Nodal Officer" className="opt">Nodal Officer</option>
 									</select>
 								</div>
 
@@ -59,7 +74,7 @@ const Login = () => {
 								</div>
 
 								<div className="form-group m-0">
-									<button type="submit" className="btn btn-primary btn-block">
+									<button onClick={submitData} type="submit" className="btn btn-primary btn-block">
 										Login
 									</button>
 								</div>

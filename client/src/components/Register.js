@@ -1,7 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const Register = () => {
+
+	const [userData,setUserData] = useState({
+		"RollName":"",
+		"email":"",
+		"password":""
+	})
+
+const handleInput = (event)=>{
+	setUserData((preVal)=>{ return{...preVal,[event.target.name]:event.target.value}})
+}
+
+const submitData = async (event)=>{
+	event.preventDefault();
+const {RollName,email,password} = userData;
+	const res = await fetch("/register",{
+		method:"POST",
+		headers:{
+			"Content-Type": "application/json"
+		},
+		body:JSON.stringify({RollName,email,password})
+	})
+
+	const val = await res.json;
+	console.log(val);
+}
+
   return (
     <div>
         <section className="h-100">
@@ -15,17 +41,19 @@ const Register = () => {
 						<div className="card-body">
 							<h4 className="card-title">Register</h4>
 							<form method="POST" className="my-login-validation" noValidate="">
-								<div className="form-group">
-									<label for="name">Name</label>
-									<input id="name" type="text" className="form-control" name="name" required autoFocus/>
-									<div className="invalid-feedback">
-										What's your name?
-									</div>
+							<div className="form-group">
+									<label htmlFor="Role">Role</label>
+									<select onChange={handleInput} defaultValue="0" value={userData.RollName} className="form-select slt" name='RollName' id="myslt" aria-label="Default select example">
+										<option selected className="inside_text_role opt">--------------Role--------------</option>
+										<option value="Police Officer" className="opt">Police Officer</option>
+										<option value="S.P" className="opt">S.P</option>
+										<option value="Nodal Officer" className="opt">Nodal Officer</option>
+									</select>
 								</div>
 
 								<div className="form-group">
 									<label for="email">E-Mail Address</label>
-									<input id="email" type="email" className="form-control" name="email" required/>
+									<input onChange={handleInput} id="email" type="email" className="form-control" name="email" required/>
 									<div className="invalid-feedback">
 										Your email is invalid
 									</div>
@@ -33,7 +61,7 @@ const Register = () => {
 
 								<div className="form-group">
 									<label for="password">Password</label>
-									<input id="password" type="password" className="form-control" name="password" required data-eye/>
+									<input onChange={handleInput} id="password" type="password" className="form-control" name="password" required data-eye/>
 									<div className="invalid-feedback">
 										Password is required
 									</div>
@@ -50,7 +78,7 @@ const Register = () => {
 								</div>
 
 								<div className="form-group m-0">
-									<button type="submit" className="btn btn-primary btn-block">
+									<button onClick={submitData} type="submit" className="btn btn-primary btn-block">
 										Register
 									</button>
 								</div>
