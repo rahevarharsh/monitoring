@@ -5,6 +5,7 @@ import Forgot from './components/Forgot';
 import Register from './components/Register';
 import Reset from './components/Reset';
 import Otp from './components/Otp';
+import PiPage from './components/PiPage';
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
         <Route exact path='/otp' element={<Otp/>}/>
         <Route exact path='/register' element={<Register/>}/> 
         <Route exact path='/reset' element={<Reset/>}/>
+        <Route exact path='/pipage' element={<PiPage/>}/>
       </Routes>
     </BrowserRouter>
     </>

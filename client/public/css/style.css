@@ -1,0 +1,269 @@
+body {
+    padding: 0;
+    margin: 0;
+    background-color: rgb(92 93 94);
+}
+
+
+.navbar {
+    justify-content: normal;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #8d8d8d !important;
+    box-shadow: rgb(0 0 0 / 64%) 0px 6px 9px 3px;
+}
+
+.n_logo {
+    display: flex;
+    align-items: center;
+    width: 17%;
+    height: 4.9rem;
+}
+
+.logo {
+    margin-left: 25%;
+    width: 51px;
+}
+
+.tglp {
+    margin-right: 2.3vw;
+    margin-top: 20px;
+    top: 0;
+    right: 0;
+    position: absolute;
+    user-select: none;
+}
+
+.tglp:focus {
+    outline: none;
+}
+
+.nav_titlep {
+    display: flex;
+    width: 66%;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav_title {
+    margin: 0;
+    font-size: 2.5vw;
+    font-family: Fredoka One;
+}
+
+.logout {
+    border: 2px solid;
+    margin-left: 11vw;
+    margin-top: 9px !important;
+    margin-bottom: 9px !important;
+    background-color: #777070;
+    color: rgba(255, 255, 255, 0.711) !important;
+    border-color: rgba(0, 0, 0, 0.578) !important;
+    user-select: none;
+}
+
+.logout:focus {
+    box-shadow: none;
+}
+
+.logout:hover {
+    background-color: rgb(164, 160, 160);
+    color: rgb(57, 55, 55) !important;
+    border-color: rgba(255, 255, 255, 0.578) !important;
+}
+
+.tablep {
+    margin: auto;
+    margin-top: 3vh;
+    width: 95vw;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+table,
+tr td {
+    border: 1px solid #000
+}
+
+tbody {
+    font-size: 1.4rem;
+    background-color: #a4a4a4;
+    text-align: center;
+    display: block;
+    max-height: 56vh;
+    overflow-y: scroll;
+}
+
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+thead {
+    height: 3rem;
+    font-family: monospace;
+    font-size: 1.5rem;
+    border-color: white;
+    color: white;
+    background-color: #4c4a4a;
+    text-align: center;
+    width: 95vw;
+}
+
+thead tr {
+    border-color: white;
+}
+
+table {
+    border: none !important;
+    width: 95vw;
+}
+
+tbody::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+tbody tr {
+    height: 3rem;
+}
+
+tbody tr td:first-child {
+    width: 9%;
+}
+
+tbody tr td:nth-child(2) {
+    text-align: start;
+    width: 47%;
+    border-right: none !important;
+}
+
+tbody tr td:nth-child(3) {
+    width: 16%;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+tbody tr td:nth-child(4) {
+    color: #6d6969;
+    ;
+    width: 25%;
+    border-left: none !important;
+}
+
+thead tr td:nth-child(2) {
+    text-align: start;
+}
+
+tbody tr td:nth-child(3) span:hover {
+    color: rgb(255, 255, 255);
+    cursor: context-menu;
+}
+
+tbody tr td:nth-child(4) span:hover {
+    color: rgb(255, 255, 255);
+    cursor: context-menu;
+    border-color: black;
+}
+
+tbody tr td:nth-child(4) span {
+    display: inline-block;
+    width: 35.2px;
+    border: 1px solid white;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.searchp {
+    display: flex;
+    width: 95vw;
+    height: 5vh;
+    margin: auto;
+    margin-top: 4vh;
+}
+
+.search {
+    width: 100%;
+    background: transparent;
+    /* background-color: #b1b1b1; */
+    box-shadow: 0px 4px 9px 1px #181515;
+    border: none;
+    border-radius: 8px;
+}
+
+.search::placeholder {
+    color: rgb(196, 196, 196);
+}
+
+.search:focus {
+    box-shadow: 0px 4px 9px 1px #181515;
+    background: transparent;
+    color: white;
+}
+
+.form-control {
+    color: white;
+}
+
+.has-search .form-control {
+    padding-left: 3.375rem;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 3.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    /* color: #aaa; */
+    color: black;
+    font-size: 20px;
+}
+
+.ftp {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.ft {
+    font-size: 20px;
+    letter-spacing: 4px;
+    display: flex;
+    height: 9vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #828282 !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .nav_titlep {
+        display: none;
+    }
+
+    .logout {
+        margin-left: 9px;
+    }
+
+    thead {
+        font-size: 14px !important;
+    }
+
+    tbody {
+        font-size: 14px !important;
+    }
+
+    tbody tr td:nth-child(4) span {
+        width: 22.6px;
+    }
+}

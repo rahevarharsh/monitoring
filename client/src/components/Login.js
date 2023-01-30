@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom'
 const Login = () => {
-
+	const navigate = useNavigate();
     const [data,setData] = useState({
         "RollName":"",
         "email":"",
@@ -26,7 +26,12 @@ const Login = () => {
 			body:JSON.stringify({RollName,email,password})
 		})
 
-		const val = await res.json;
+		 if (res.status===200) {
+			navigate("/pipage")
+		 }
+		 else{
+			window.alert("wrong credentials");
+		 }
 	}
 
   return (

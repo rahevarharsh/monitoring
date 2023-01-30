@@ -4,20 +4,37 @@ const trasport = require('../Mail/mail_auth')
 const user = require('../Models/userschema')
 const otpData = require('../Models/otpSchema')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+const authentication = require('../Middleware/Authentication')
 var useID = "";
 var otpPars = 0;
 Router.get("/", function (req, res) {
     res.send("Hello");
 })
-Router.post("/login", (req, res) => {
-    console.log(req.body);
-
+Router.post("/login", async (req, res) => {
+    // console.log(req.body);
+    const { RollName, email, password } = req.body;
+    const user_data = await user.findOne({ email })
+    // console.log(await bcrypt.compare(password, user_data.password));
+    if (await bcrypt.compare(password, user_data.password)) {
+        const tokan = await user_data.generateAuthToken()
+        await res.cookie("JWT_TOKEN", tokan,{
+            expires:new Date(Date.now()+500000),
+            httpOnly:true
+        })
+        res.status(200).json({ "message": "Welcome back!" })
+    }
+    else {
+        res.status(401).json({ "Error": "wrong credentials" })
+    }
 })
 
-Router.post("/register", (req, res) => {
+
+Router.post("/register", async (req, res) => {
     console.log(req.body);
     const { email, password } = req.body;
-    const InsertData = new user({ email, password });
+    const hash_pass = await bcrypt.hash(password, 10);
+    const InsertData = new user({ email, password: hash_pass });
     InsertData.save();
 })
 
@@ -95,7 +112,7 @@ Router.post("/resend", async (req, res) => {
     const last_otpData = await otpData.find({ email: req.body.parseEmail });
     if (last_otpData[last_otpData.length - 1].expiresAt < Date.now()) {
 
-        await otpData.deleteMany({email: req.body.parseEmail})
+        await otpData.deleteMany({ email: req.body.parseEmail })
         const otp = (Math.round(Math.random() * 9000) + 1000).toString();
         const mailOptions = {
             from: process.env.USERID,
@@ -144,6 +161,11 @@ Router.post("/resend", async (req, res) => {
 
     }
 
+})
+
+Router.get("/pipage", authentication, (req, res) => {
+    console.log("hello from PI back-end");
+    res.send(req.root_user)
 })
 
 module.exports = Router
