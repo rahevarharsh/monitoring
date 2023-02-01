@@ -6,6 +6,8 @@ import Register from './components/Register';
 import Reset from './components/Reset';
 import Otp from './components/Otp';
 import PiPage from './components/PiPage';
+import Test from './components/Test';
+import Detail from './components/Detail';
 function App() {
   return (
     <>
@@ -17,6 +19,9 @@ function App() {
         <Route exact path='/register' element={<Register/>}/> 
         <Route exact path='/reset' element={<Reset/>}/>
         <Route exact path='/pipage' element={<PiPage/>}/>
+        <Route exact path='/pipage/detail' element={<Detail/>}/>
+        <Route exact path='/test' element={<Test/>}/>
+
       </Routes>
     </BrowserRouter>
     </>

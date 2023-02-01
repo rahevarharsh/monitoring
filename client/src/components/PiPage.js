@@ -1,30 +1,47 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import Firrow from './FIR_Row';
 import Notify from './Notify'
 import { useNavigate } from 'react-router-dom';
+import './style.css'
 const PiPage = () => {
+    const [myArray, setMyArray] = useState([]);
+    const [suggetionfield,setsuggetionfield]=useState([]);
     const navigate = useNavigate()
-    const callPIPage = async()=>{
-        const res = await fetch('/pipage',{
-            method:'GET',
-            headers:{
-                Accept:'application/json',
-                'Content-Type':'application/json'
+    let count = 1;
+    let curr_sugge = 0;
+    const callPIPage = async () => {
+        const res = await fetch('/pipage', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
             },
-            credentials:'include'
+            credentials: 'include'
         })
         const data = await res.json()
-        console.log(res.status);
-        if(res.status!==200){
+        console.log(data);
+        if (res.status !== 200) {
             navigate('/')
         }
-        console.log(data);
+        else {
+            //    await console.log(data[1]);
+            await setMyArray((oldData) => [...oldData, data[1]])
+            console.log(myArray);
+        }
+
     }
 
-    useEffect(()=>{
-        callPIPage()
-    },[])
+    useEffect(() => {
+
+        if (count) {
+            callPIPage()
+            console.log('called fetch function');
+            count--;
+        }
+
+
+    }, [])
 
     const mystyle = {
         width: "9%",
@@ -34,7 +51,10 @@ const PiPage = () => {
     function modaltitle(event, el) {
         var fir = event.target.parentElement.parentElement.childNodes[1].innerText;
         document.getElementById("exampleModalLongTitle").innerText = "F.I.R No:-" + fir;
-        console.log(document.getElementById("exampleModalLongTitle").innerText);
+
+        curr_sugge = fir;
+        console.log(curr_sugge);
+        renderSuggetion();
 
     }
 
@@ -61,6 +81,19 @@ const PiPage = () => {
             }
         }
     }
+
+    const renderSuggetion=()=>{
+        if(!curr_sugge){return;}
+        myArray.map((obj,index)=>{
+            if(obj.test_no == curr_sugge){
+                console.log("MATCH nUMBER!");
+                setsuggetionfield(obj.just);
+            }
+          
+        })
+    
+    }
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -81,7 +114,7 @@ const PiPage = () => {
 
             <div className="form-group has-search searchp">
                 <i className="fa-solid fa-magnifying-glass form-control-feedback"></i>
-                <input style={{ color: "black" }} className="form-control search" type="text" id="myInput" onKeyUp={myFunction} placeholder="Search for F.I.R Number.." />
+                <input className="form-control search" type="text" id="myInput" onKeyUp={myFunction} placeholder="Search for F.I.R Number.." />
             </div>
 
             <div className="tablep">
@@ -95,12 +128,14 @@ const PiPage = () => {
                         </tr>
                     </thead>
                     <tbody id="myTable">
-                        <Firrow index={1} firnumber={123645} notifincation={3} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
+                        {console.log(myArray[0])}
+                        {(myArray.length === 0) ? "No data.." : <Firrow index={1} firnumber={myArray[0].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />}
+                        {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={3} firnumber={123647} notifincation={0} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={4} firnumber={123648} notifincation={3} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={5} firnumber={123649} notifincation={1} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
-                        <Firrow index={6} firnumber={123650} notifincation={7} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
+                        <Firrow index={6} firnumber={123650} notifincation={7} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                     </tbody>
                 </table>
             </div>
@@ -118,13 +153,15 @@ const PiPage = () => {
                             </button>
                         </div>
                         <div className="modal-body">
+                            {(myArray.length === 0) ? "No data.." :  "" }
+                            {suggetionfield.map((text)=>(<Notify roll='P.I' body={text} />))}
+                            {/* {myArray[0].just.map((t)=>console.log(t))}    */}
+                            {/* <Notify roll='nodel' body={body} />
                             <Notify roll='P.I' body={body} />
                             <Notify roll='nodel' body={body} />
                             <Notify roll='P.I' body={body} />
                             <Notify roll='nodel' body={body} />
-                            <Notify roll='P.I' body={body} />
-                            <Notify roll='nodel' body={body} />
-                            <Notify roll='P.I' body={body} />
+                            <Notify roll='P.I' body={body} /> */}
 
                         </div>
                     </div>

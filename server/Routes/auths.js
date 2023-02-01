@@ -18,9 +18,9 @@ Router.post("/login", async (req, res) => {
     // console.log(await bcrypt.compare(password, user_data.password));
     if (await bcrypt.compare(password, user_data.password)) {
         const tokan = await user_data.generateAuthToken()
-        await res.cookie("JWT_TOKEN", tokan,{
-            expires:new Date(Date.now()+500000),
-            httpOnly:true
+        await res.cookie("JWT_TOKEN", tokan, {
+            expires: new Date(Date.now() + 500000),
+            httpOnly: true
         })
         res.status(200).json({ "message": "Welcome back!" })
     }
@@ -165,7 +165,11 @@ Router.post("/resend", async (req, res) => {
 
 Router.get("/pipage", authentication, (req, res) => {
     console.log("hello from PI back-end");
-    res.send(req.root_user)
+    req.test = {
+        just: ["this is the test","test2",'test3'],
+        test_no: 123645
+    }
+    res.send([req.root_user, req.test])
 })
 
 module.exports = Router
