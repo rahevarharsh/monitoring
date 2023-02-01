@@ -26,7 +26,7 @@ const PiPage = () => {
         }
         else {
             //    await console.log(data[1]);
-            await setMyArray((oldData) => [...oldData, data[1]])
+            await setMyArray((oldData) => oldData.concat(data[1]))
             console.log(myArray);
         }
 
@@ -129,7 +129,8 @@ const PiPage = () => {
                     </thead>
                     <tbody id="myTable">
                         {console.log(myArray[0])}
-                        {(myArray.length === 0) ? "No data.." : <Firrow index={1} firnumber={myArray[0].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />}
+                        {(myArray.length === 0) ? "No data.." : myArray.map((obj,i)=>(<Firrow index={i} firnumber={obj.test_no} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />)) }
+                        {/* <Firrow index={1} firnumber={myArray[1].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                         {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={3} firnumber={123647} notifincation={0} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />

@@ -165,10 +165,20 @@ Router.post("/resend", async (req, res) => {
 
 Router.get("/pipage", authentication, (req, res) => {
     console.log("hello from PI back-end");
-    req.test = {
+    req.test = [{
         just: ["this is the test","test2",'test3'],
         test_no: 123645
+    },
+    {
+        just: ["inspect fast","send photos",'upload raguler'],
+        test_no: 123646
     }
+    ,
+    {
+        just: ["fsdfsdf","ewrsdf sdferse",'ersadf sdaersar'],
+        test_no: 123647
+    }
+]
     res.send([req.root_user, req.test])
 })
 
