@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Phase = () => {
+const Phase = (props) => {
     return (
         <div><div className="card">
             <div className="card-body">
@@ -8,7 +8,7 @@ const Phase = () => {
                     display: "flex",
                     columnGap: "1rem"
                 }}>
-                    <h5 className="card-title">PHASE-1</h5>
+                    <h5 className="card-title">PHASE-{props.idx}</h5>
                     <i className="fa-regular fa-circle-check icn-c" style={{
                         paddingTop: "1.5px",
                         fontSize: "1.4rem", color: "green"
@@ -28,11 +28,12 @@ const Phase = () => {
                         alignItems: "center",
                         columnGap: "9px"
                     }}>
-                        <label for="first-phase">
+                        <label for={props.idx}>
                             <i className="fa-solid fa-upload icn"></i>
                         </label>
-                        <input type="file" id="first-phase" style={{ display: "none", visibility: "none" }}
-                            onChange="getimage(this);" />
+                        <input type="file" id={props.idx} style={{ display: "none", visibility: "none" }}
+                             onChange={props.inputFile} /> 
+
                         <div id="display-name" style={{ width: "max-content", display: "flex", columnGap: "5px" }}></div>
                     </div>
                 </div>

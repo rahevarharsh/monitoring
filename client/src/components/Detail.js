@@ -1,16 +1,44 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import './details.js'
+// import './details.js'
 import './detail.css'
 import Phase from './Phase'
-export function AddLibrary(urlOfTheLibrary) {
-    const script = document.createElement('script');
-    script.src = urlOfTheLibrary;
-    script.async = true;
-    document.body.appendChild(script);
-}
-const Detail = () => {
+// import { s } from './PiPage.js'
 
+const Detail = (props) => {
+    var deletes = document.querySelectorAll(".fa-trash");
+    console.log(deletes);
+    deletes.forEach(el => {
+        el.addEventListener("click", () => {
+            el.parentElement.previousElementSibling.value = '';
+            el.parentElement.innerHTML = '';
+        })
+    });
+
+    const getimage = (event) => {
+        console.log(event.target);
+
+        var display_name = event.target.nextElementSibling;
+        console.log(display_name);
+
+        var image = event.target.value;
+        var name = image.replace(/^.*\\/, "");
+        display_name.innerHTML = name + "<i class=fa-trash></i>";
+        display_name.children[0].classList.add("fa-solid");
+
+        var deletess = document.querySelectorAll(".fa-trash");
+
+        deletess.forEach(el => {
+            el.addEventListener("click", () => {
+                el.parentElement.previousElementSibling.value = '';
+                el.parentElement.innerHTML = '';
+            })
+        });
+    }
+
+
+    console.log("hello");
+    // console.log(s);
     return (
         <>
             {/* <ScriptTag isHydrating={true} type="text/javascript" src='./details.js' /> */}
@@ -39,15 +67,15 @@ const Detail = () => {
                     columnGap: "1rem",
                     justifyContent: "space-between"
                 }}>
-                    <p className="title">F.I.R No:-123645</p>
+                    <p className="title">F.I.R No:-{props.dataNumber}</p>
                     <p className="title">Name:-Ayush Patel</p>
                 </div>
 
-                <Phase />
-                <Phase />
-                <Phase />
-                <Phase />
-                <Phase />
+                <Phase idx={1} inputFile={getimage} />
+                <Phase idx={2} inputFile={getimage} />
+                <Phase idx={3} inputFile={getimage} />
+                <Phase idx={4} inputFile={getimage} />
+                <Phase idx={5} inputFile={getimage} />
             </div>
 
             <footer className="bg-light text-center text-lg-start ftp">
@@ -56,7 +84,7 @@ const Detail = () => {
                     <NavLink className="text-dark" to="https://mdbootstrap.com/">W.M.I.S</NavLink>
                 </div>
             </footer>
-            {AddLibrary("./js/detail.js")}
+
         </>
     )
 }

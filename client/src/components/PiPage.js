@@ -4,7 +4,9 @@ import Firrow from './FIR_Row';
 import Notify from './Notify'
 import { useNavigate } from 'react-router-dom';
 import './style.css'
-const PiPage = () => {
+// export let test = true;
+
+const PiPage = (props) => {
     const [myArray, setMyArray] = useState([]);
     const [suggetionfield,setsuggetionfield]=useState([]);
     const navigate = useNavigate()
@@ -53,7 +55,9 @@ const PiPage = () => {
         document.getElementById("exampleModalLongTitle").innerText = "F.I.R No:-" + fir;
 
         curr_sugge = fir;
+        // s=curr_sugge;
         console.log(curr_sugge);
+        // console.log("value of S :"+s);
         renderSuggetion();
 
     }
@@ -93,7 +97,12 @@ const PiPage = () => {
         })
     
     }
-
+  const detailClick =(n)=>{
+    console.log(n);
+    props.clickdetail(n)
+    navigate('/pipage/detail'+n)
+    
+  }
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -129,7 +138,7 @@ const PiPage = () => {
                     </thead>
                     <tbody id="myTable">
                         {console.log(myArray[0])}
-                        {(myArray.length === 0) ? "No data.." : myArray.map((obj,i)=>(<Firrow index={i} firnumber={obj.test_no} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />)) }
+                        {(myArray.length === 0) ? "No data.." : myArray.map((obj,i)=>(<Firrow index={i} firnumber={obj.test_no} ClickOndetail={()=>{detailClick(obj.test_no)}} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />)) }
                         {/* <Firrow index={1} firnumber={myArray[1].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                         {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
@@ -171,8 +180,6 @@ const PiPage = () => {
 
 
 
-
-
             <footer className="bg-light text-center text-lg-start ftp">
                 <div className="text-center p-3 ft" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
                     © 2023 Copyright:
@@ -182,5 +189,7 @@ const PiPage = () => {
         </div>
     )
 }
-
+setTimeout(2000);
 export default PiPage
+   
+console.log('eND OF THE PROGRAME');
