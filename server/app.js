@@ -7,7 +7,7 @@ app.use(cookieParser())
 dotenv.config({path:"./config.env"})
 app.use(express.json())
 require("./DB/connection")
-// mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', false);
 
 app.use(require("./Routes/auths"));
 

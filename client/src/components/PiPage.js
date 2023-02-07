@@ -24,8 +24,8 @@ const PiPage = (props) => {
 
         const data = await res.json()
         if (res.status === 200) {
-            await setMyArray((oldData) => oldData.concat(data[1]))
-            console.log(data[1]);
+            await setMyArray((oldData) => oldData.concat(data))
+            console.log(data);
             console.log(myArray);
         }
         else {
@@ -90,9 +90,13 @@ const PiPage = (props) => {
     const renderSuggetion = () => {
         if (!curr_sugge) { return; }
         myArray.map((obj, index) => {
-            if (obj.test_no == curr_sugge) {
+            if (obj.fir_no == curr_sugge) {
                 console.log("MATCH nUMBER!");
-                setsuggetionfield(obj.just);
+                // obj.suggestionsArr.map(()=>)
+                let temp = []
+                obj.suggestionsArr.map((e)=>{temp.push(e.suggestion)})
+                setsuggetionfield(temp)
+                console.log(obj.suggestionsArr[0].suggestion);
             }
 
         })
@@ -139,8 +143,8 @@ const PiPage = (props) => {
                     </thead>
                     <tbody id="myTable">
                         {console.log(myArray[0])}
-                        {(myArray.length === 0) ? "No data.." : myArray.map((obj, i) => (<Firrow index={i} firnumber={obj.test_no} ClickOndetail={() => { detailClick(obj.test_no) }} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />))}
-                        {/* <Firrow index={1} firnumber={myArray[1].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
+                        {(myArray.length === 0) ? "No data.." : myArray.map((obj, i) => (<Firrow index={i} firnumber={obj.fir_no} ClickOndetail={() => { detailClick(obj.fir_no) }} notifincation={obj.suggestionsArr.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />))}
+                        {/* <Firrow index={1} firnumber={myArray[1].fir_no} notifincation={myArray[0].suggestionsArr.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                         {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={3} firnumber={123647} notifincation={0} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
@@ -166,7 +170,7 @@ const PiPage = (props) => {
                         <div className="modal-body">
                             {(myArray.length === 0) ? "No data.." : ""}
                             {suggetionfield.map((text) => (<Notify roll='P.I' body={text} />))}
-                            {/* {myArray[0].just.map((t)=>console.log(t))}    */}
+                            {/* {myArray[0].suggestionsArr.map((t)=>console.log(t))}    */}
                             {/* <Notify roll='nodel' body={body} />
                             <Notify roll='P.I' body={body} />
                             <Notify roll='nodel' body={body} />

@@ -225,39 +225,52 @@ Router.get("/pipage", authenticationOfficer, async (req, res) => {
     let caseIDList = [];
     const cases = req.root_user.case_ids
     cases.map((obj) => { caseIDList.push(obj.case_id) })
-    // console.log(caseIDList);
-    let caseList = await getNotification(caseIDList)
-    let parserArr = []
-    console.log(caseList)
-    for (let index = 0; index < caseIDList.length; index++) {
-        parserArr[index] = {
-            just: caseList[index],
-            test_no: caseIDList[index]
-        }
-    }
-    // console.log(await case_schema.find({case_id:caseIDList[0]}))
-    req.test = [{
-        just: ["this is the test", "test2", 'test3'],
-        test_no: 123645
-    },
-    {
-        just: ["inspect fast", "send photos", 'upload raguler'],
-        test_no: 123646
-    }
-        ,
-    {
-        just: ["fsdfsdf", "ewrsdf sdferse", 'ersadf sdaersar', 'loream is the fourth filed'],
-        test_no: 123647
-    }
-    ]
-    req.parserArr = parserArr
-    dataForSend = [req.root_user, caseList]
+    let caseArr = []
+    getNotification(caseIDList).then(users => {
+        users.map((obj, idx) => {
+            caseArr[idx] = {
+                fir_no: caseIDList[idx],
+                suggestionsArr: obj.notifications
+            }
+            console.log(obj.notifications);
+        })
+        console.log(caseArr);
+        
+        res.send(caseArr)
+    })
 
-    // console.log(dataForSend);
-    console.log("fkjshdfj")
-    console.log(parserArr)
-    // console.log(caseList);
-    res.send(dataForSend)
+    // console.log(caseIDList);
+    // let caseList = await getNotification(req,caseIDList)
+    // for (let index = 0; index < caseIDList.length; index++) {
+    //     parserArr[index] = {
+    //         just: caseList[index],
+    //         test_no: caseIDList[index]
+    //     }
+    // }
+    // // console.log(await case_schema.find({case_id:caseIDList[0]}))
+    // req.test = [{
+    //     just: ["this is the test", "test2", 'test3'],
+    //     test_no: 123645
+    // },
+    // {
+    //     just: ["inspect fast", "send photos", 'upload raguler'],
+    //     test_no: 123646
+    // }
+    //     ,
+    // {
+    //     just: ["fsdfsdf", "ewrsdf sdferse", 'ersadf sdaersar', 'loream is the fourth filed'],
+    //     test_no: 123647
+    // }
+    // ]
+    // req.parserArr = parserArr
+    // dataForSend = [req.root_user, caseList]
+
+    // // console.log(dataForSend);
+    // console.log("fkjshdfj")
+    // console.log(parserArr)
+    // console.log('END');
+    // console.log(req.parseArr);
+    //  res.send(c)
 })
 
 Router.post("/detail", (req, res) => {
