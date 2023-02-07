@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 // import './details.js'
 import './detail.css'
@@ -6,6 +6,28 @@ import Phase from './Phase'
 // import { s } from './PiPage.js'
 
 const Detail = (props) => {
+    let count = 1;
+    const sendID = async () => {
+       const res = await fetch("/detail",{
+        method:'POST',
+        headers:{
+            'Content-Type':"application/json"
+        },
+        body:JSON.stringify({id:props.dataNumber})
+       })
+    //    const data = await res.json()
+    //    console.log(data);
+    }
+
+
+    useEffect(async()=>{
+        if (count) {
+            await sendID()
+            console.log('called fetch function');
+            count--;
+        }
+    },[])
+
     var deletes = document.querySelectorAll(".fa-trash");
     console.log(deletes);
     deletes.forEach(el => {
@@ -78,12 +100,12 @@ const Detail = (props) => {
                 <Phase idx={5} inputFile={getimage} />
             </div>
 
-            <footer className="bg-light text-center text-lg-start ftp">
+            {/* <footer className="bg-light text-center text-lg-start ftp">
                 <div className="text-center p-3 ft" style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}>
                     © 2023 Copyright:
                     <NavLink className="text-dark" to="https://mdbootstrap.com/">W.M.I.S</NavLink>
                 </div>
-            </footer>
+            </footer> */}
 
         </>
     )

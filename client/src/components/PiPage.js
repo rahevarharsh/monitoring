@@ -8,7 +8,7 @@ import './style.css'
 
 const PiPage = (props) => {
     const [myArray, setMyArray] = useState([]);
-    const [suggetionfield,setsuggetionfield]=useState([]);
+    const [suggetionfield, setsuggetionfield] = useState([]);
     const navigate = useNavigate()
     let count = 1;
     let curr_sugge = 0;
@@ -21,15 +21,16 @@ const PiPage = (props) => {
             },
             credentials: 'include'
         })
+
         const data = await res.json()
-        console.log(data);
-        if (res.status !== 200) {
-            navigate('/')
+        if (res.status === 200) {
+            await setMyArray((oldData) => oldData.concat(data[1]))
+            console.log(data[1]);
+            console.log(myArray);
         }
         else {
             //    await console.log(data[1]);
-            await setMyArray((oldData) => oldData.concat(data[1]))
-            console.log(myArray);
+            navigate('/')
         }
 
     }
@@ -86,23 +87,23 @@ const PiPage = (props) => {
         }
     }
 
-    const renderSuggetion=()=>{
-        if(!curr_sugge){return;}
-        myArray.map((obj,index)=>{
-            if(obj.test_no == curr_sugge){
+    const renderSuggetion = () => {
+        if (!curr_sugge) { return; }
+        myArray.map((obj, index) => {
+            if (obj.test_no == curr_sugge) {
                 console.log("MATCH nUMBER!");
                 setsuggetionfield(obj.just);
             }
-          
+
         })
-    
+
     }
-  const detailClick =(n)=>{
-    console.log(n);
-    props.clickdetail(n)
-    navigate('/pipage/detail'+n)
-    
-  }
+    const detailClick = (n) => {
+        console.log(n);
+        props.clickdetail(n)
+        navigate('/pipage/detail' + n)
+
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -138,7 +139,7 @@ const PiPage = (props) => {
                     </thead>
                     <tbody id="myTable">
                         {console.log(myArray[0])}
-                        {(myArray.length === 0) ? "No data.." : myArray.map((obj,i)=>(<Firrow index={i} firnumber={obj.test_no} ClickOndetail={()=>{detailClick(obj.test_no)}} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />)) }
+                        {(myArray.length === 0) ? "No data.." : myArray.map((obj, i) => (<Firrow index={i} firnumber={obj.test_no} ClickOndetail={() => { detailClick(obj.test_no) }} notifincation={obj.just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />))}
                         {/* <Firrow index={1} firnumber={myArray[1].test_no} notifincation={myArray[0].just.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                         {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
@@ -163,8 +164,8 @@ const PiPage = (props) => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            {(myArray.length === 0) ? "No data.." :  "" }
-                            {suggetionfield.map((text)=>(<Notify roll='P.I' body={text} />))}
+                            {(myArray.length === 0) ? "No data.." : ""}
+                            {suggetionfield.map((text) => (<Notify roll='P.I' body={text} />))}
                             {/* {myArray[0].just.map((t)=>console.log(t))}    */}
                             {/* <Notify roll='nodel' body={body} />
                             <Notify roll='P.I' body={body} />
@@ -191,5 +192,5 @@ const PiPage = (props) => {
 }
 setTimeout(2000);
 export default PiPage
-   
+
 console.log('eND OF THE PROGRAME');

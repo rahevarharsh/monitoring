@@ -1,47 +1,105 @@
 const express = require('express');
 const Router = express.Router();
 const trasport = require('../Mail/mail_auth')
-const user = require('../Models/userschema')
+const officaer = require('../Models/officaerschema')
+const nodal = require('../Models/nodal_schema')
 const otpData = require('../Models/otpSchema')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const authentication = require('../Middleware/Authentication')
+const authenticationOfficer = require('../Middleware/Authentication');
+const authenticationNodal = require('../Middleware/AuthenticationNodal');
+const case_schema = require('../Models/case_schema');
+const dataInsertion = require('../TestCase/case_data');
+const dataInsertionNodal = require('../TestCase/nodal_data');
+const dataInsertionPolice = require('../TestCase/police_data');
+const getNotification = require('../Func/getNotification');
 var useID = "";
 var otpPars = 0;
+let RollNameGlob
 Router.get("/", function (req, res) {
     res.send("Hello");
+
 })
+
 Router.post("/login", async (req, res) => {
     // console.log(req.body);
+    // dataInsertion()
+    //    await dataInsertionNodal()
+    //    await dataInsertionPolice()
     const { RollName, email, password } = req.body;
-    const user_data = await user.findOne({ email })
-    // console.log(await bcrypt.compare(password, user_data.password));
-    if (await bcrypt.compare(password, user_data.password)) {
-        const tokan = await user_data.generateAuthToken()
-        await res.cookie("JWT_TOKEN", tokan, {
-            expires: new Date(Date.now() + 500000),
-            httpOnly: true
-        })
-        res.status(200).json({ "message": "Welcome back!" })
+    if (RollName == "Nodal Officer") {
+        const nodal_data = await nodal.findOne({ email })
+        // console.log(await bcrypt.compare(password, officaer_data.password));
+        if (nodal_data) {
+            console.log("for nodal :" + await bcrypt.compare(password, nodal_data.password));
+            if (await bcrypt.compare(password, nodal_data.password)) {
+                const tokan = await nodal_data.generateAuthToken()
+                await res.cookie("JWT_TOKEN", tokan, {
+                    expires: new Date(Date.now() + 500000),
+                    httpOnly: true
+                })
+                console.log(tokan);
+                res.status(200).json({ "message": "RollName" })
+                RollNameGlob = RollName
+            }
+            else {
+                res.status(401).json({ "Error": "wrong credentials" })
+            }
+        }
+
+        else {
+            res.status(401).json({ "Error": "wrong credentials" })
+        }
     }
-    else {
-        res.status(401).json({ "Error": "wrong credentials" })
+    else if (RollName == "Police Officer") {
+        const officaer_data = await officaer.findOne({ email })
+        // console.log(await bcrypt.compare(password, officaer_data.password));
+        if (officaer_data) {
+            if (await bcrypt.compare(password, officaer_data.password)) {
+                const tokan = await officaer_data.generateAuthToken()
+                await res.cookie("JWT_TOKEN", tokan, {
+                    expires: new Date(Date.now() + 500000),
+                    httpOnly: true
+                })
+                req.RollName = RollName
+                res.status(200).json({ "message": RollName })
+                RollNameGlob = RollName
+            }
+            else {
+                res.status(401).json({ "Error": "wrong credentials" })
+            }
+        }
+
+        else {
+            res.status(401).json({ "Error": "wrong credentials" })
+        }
     }
+
 })
 
 
 Router.post("/register", async (req, res) => {
     console.log(req.body);
-    const { email, password } = req.body;
+    const { RollName, email, password } = req.body;
     const hash_pass = await bcrypt.hash(password, 10);
-    const InsertData = new user({ email, password: hash_pass });
-    InsertData.save();
+
+
+    if (RollName == "Nodal Officer") {
+        const InsertData = new nodal({ email, password: hash_pass });
+        InsertData.save();
+    }
+    else if (RollName == "Police Officer") {
+        const InsertData = new officaer({ email, password: hash_pass });
+        InsertData.save();
+    }
+
+
 })
 
 Router.post("/forgotpassword", async (req, res) => {
     console.log(req.body);
     const { email } = req.body;
-    const Isexist = await user.findOne({ email });
+    const Isexist = await officaer.findOne({ email });
     useID = email;
     if (Isexist) {
         const otp = (Math.round(Math.random() * 9000) + 1000).toString();
@@ -86,7 +144,7 @@ Router.post("/otp", async (req, res) => {
     const data = await otpData.find({ email: useID })
 
     if (!data) {
-        res.json({ "message": "user is not exist" })
+        res.json({ "message": "officaer is not exist" })
     }
     else {
         // verify
@@ -158,28 +216,58 @@ Router.post("/resend", async (req, res) => {
             }
         })
 
-
     }
 
 })
 
-Router.get("/pipage", authentication, (req, res) => {
-    console.log("hello from PI back-end");
+Router.get("/pipage", authenticationOfficer, async (req, res) => {
+    console.log("hello from PI back-end :" + req.RollName);
+    let caseIDList = [];
+    const cases = req.root_user.case_ids
+    cases.map((obj) => { caseIDList.push(obj.case_id) })
+    // console.log(caseIDList);
+    let caseList = await getNotification(caseIDList)
+    let parserArr = []
+    console.log(caseList)
+    for (let index = 0; index < caseIDList.length; index++) {
+        parserArr[index] = {
+            just: caseList[index],
+            test_no: caseIDList[index]
+        }
+    }
+    // console.log(await case_schema.find({case_id:caseIDList[0]}))
     req.test = [{
-        just: ["this is the test","test2",'test3'],
+        just: ["this is the test", "test2", 'test3'],
         test_no: 123645
     },
     {
-        just: ["inspect fast","send photos",'upload raguler'],
+        just: ["inspect fast", "send photos", 'upload raguler'],
         test_no: 123646
     }
-    ,
+        ,
     {
-        just: ["fsdfsdf","ewrsdf sdferse",'ersadf sdaersar','loream is the fourth filed'],
+        just: ["fsdfsdf", "ewrsdf sdferse", 'ersadf sdaersar', 'loream is the fourth filed'],
         test_no: 123647
     }
-]
-    res.send([req.root_user, req.test])
+    ]
+    req.parserArr = parserArr
+    dataForSend = [req.root_user, caseList]
+
+    // console.log(dataForSend);
+    console.log("fkjshdfj")
+    console.log(parserArr)
+    // console.log(caseList);
+    res.send(dataForSend)
+})
+
+Router.post("/detail", (req, res) => {
+    console.log(req.body);
+
+    res.send("ok this is vaild")
+})
+
+Router.get("/nodalpage", authenticationNodal, (req, res) => {
+    res.send("hello world!")
 })
 
 module.exports = Router
