@@ -9,6 +9,7 @@ import './style.css'
 const PiPage = (props) => {
     const [myArray, setMyArray] = useState([]);
     const [suggetionfield, setsuggetionfield] = useState([]);
+    const [suggName,setSuggName] = useState([])
     const navigate = useNavigate()
     let count = 1;
     let curr_sugge = 0;
@@ -94,8 +95,13 @@ const PiPage = (props) => {
                 console.log("MATCH nUMBER!");
                 // obj.suggestionsArr.map(()=>)
                 let temp = []
-                obj.suggestionsArr.map((e)=>{temp.push(e.suggestion)})
+                let name = []
+                obj.suggestionsArr.map((e) => {
+                    temp.push(e.suggestion)
+                    name.push(e.name)
+                })
                 setsuggetionfield(temp)
+                setSuggName(name)
                 console.log(obj.suggestionsArr[0].suggestion);
             }
 
@@ -143,7 +149,7 @@ const PiPage = (props) => {
                     </thead>
                     <tbody id="myTable">
                         {console.log(myArray[0])}
-                        {(myArray.length === 0) ? "No data.." : myArray.map((obj, i) => (<Firrow index={i} firnumber={obj.fir_no} ClickOndetail={() => { detailClick(obj.fir_no) }} notifincation={obj.suggestionsArr.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />))}
+                        {(myArray.length === 0) ? "No data.." : myArray.map((obj, i) => (<Firrow index={i+1} firnumber={obj.fir_no} ClickOndetail={() => { detailClick(obj.fir_no) }} notifincation={obj.suggestionsArr.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />))}
                         {/* <Firrow index={1} firnumber={myArray[1].fir_no} notifincation={myArray[0].suggestionsArr.length} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} /> */}
                         {/* <Firrow index={1} firnumber={123645} notifincation={2} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
                         <Firrow index={2} firnumber={123646} notifincation={5} target="#exampleModalCenter" toggle="modal" handleClick={(event) => modaltitle(event)} />
@@ -169,7 +175,7 @@ const PiPage = (props) => {
                         </div>
                         <div className="modal-body">
                             {(myArray.length === 0) ? "No data.." : ""}
-                            {suggetionfield.map((text) => (<Notify roll='P.I' body={text} />))}
+                            {suggetionfield.map((text,idx) => (<Notify roll={suggName[idx]} body={text} />))}
                             {/* {myArray[0].suggestionsArr.map((t)=>console.log(t))}    */}
                             {/* <Notify roll='nodel' body={body} />
                             <Notify roll='P.I' body={body} />

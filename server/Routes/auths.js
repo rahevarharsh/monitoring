@@ -13,6 +13,10 @@ const dataInsertion = require('../TestCase/case_data');
 const dataInsertionNodal = require('../TestCase/nodal_data');
 const dataInsertionPolice = require('../TestCase/police_data');
 const getNotification = require('../Func/getNotification');
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 var useID = "";
 var otpPars = 0;
 let RollNameGlob
@@ -26,6 +30,26 @@ Router.post("/login", async (req, res) => {
     // dataInsertion()
     //    await dataInsertionNodal()
     //    await dataInsertionPolice()
+
+    // Update code adding new Element in array
+    /*case_schema.updateOne({ case_id: '1079' }, {
+        $push: {
+            notifications: [  {
+                name: "Naresh",
+                nodal_id: "1085",
+                suggestion: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum"
+            },{
+                name: "Aryan",
+                nodal_id: "1023",
+                suggestion: "Use a door viewer before opening your door"
+            }]
+        }
+    }, function (err) {
+        if (err) {
+            console.log(err);
+        }
+    })*/
+
     const { RollName, email, password } = req.body;
     if (RollName == "Nodal Officer") {
         const nodal_data = await nodal.findOne({ email })
@@ -35,7 +59,7 @@ Router.post("/login", async (req, res) => {
             if (await bcrypt.compare(password, nodal_data.password)) {
                 const tokan = await nodal_data.generateAuthToken()
                 await res.cookie("JWT_TOKEN", tokan, {
-                    expires: new Date(Date.now() + 500000),
+                    expires: new Date(Date.now() + 9000000),
                     httpOnly: true
                 })
                 console.log(tokan);
@@ -58,7 +82,7 @@ Router.post("/login", async (req, res) => {
             if (await bcrypt.compare(password, officaer_data.password)) {
                 const tokan = await officaer_data.generateAuthToken()
                 await res.cookie("JWT_TOKEN", tokan, {
-                    expires: new Date(Date.now() + 500000),
+                    expires: new Date(Date.now() + 9000000),
                     httpOnly: true
                 })
                 req.RollName = RollName
@@ -196,8 +220,6 @@ Router.post("/resend", async (req, res) => {
         })
         await NewOtp.save();
         res.status(200).json({ "message": "OTP Resended !" })
-
-
     }
     else {
 
@@ -235,7 +257,7 @@ Router.get("/pipage", authenticationOfficer, async (req, res) => {
             console.log(obj.notifications);
         })
         console.log(caseArr);
-        
+
         res.send(caseArr)
     })
 
@@ -273,6 +295,9 @@ Router.get("/pipage", authenticationOfficer, async (req, res) => {
     //  res.send(c)
 })
 
+
+
+
 Router.post("/detail", (req, res) => {
     console.log(req.body);
 
@@ -282,5 +307,11 @@ Router.post("/detail", (req, res) => {
 Router.get("/nodalpage", authenticationNodal, (req, res) => {
     res.send("hello world!")
 })
+
+Router.post('/api/pdf', (req, res) => {
+    const pdf = req.file;
+    console.log(pdf);
+    // process the pdf file
+  });
 
 module.exports = Router

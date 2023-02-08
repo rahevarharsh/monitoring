@@ -36,7 +36,7 @@ userschema.methods.generateAuthToken = async function () {
         // console.log(last_token);
         if (len === 0) {
             let jwt_token = jwt.sign({ _id: this._id }, process.env.SECRET)
-            this.tokens = this.tokens.concat({ token: { data_jwt: jwt_token, expiresAt: (Date.now() + 18000000) } })
+            this.tokens = this.tokens.concat({ token: { data_jwt: jwt_token, expiresAt: (Date.now() + 180000000) } })
             const len = this.tokens.length;
             console.log(this.tokens[len - 1]);
             await this.save()

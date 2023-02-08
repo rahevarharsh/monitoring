@@ -6,27 +6,27 @@ import Phase from './Phase'
 // import { s } from './PiPage.js'
 
 const Detail = (props) => {
-    let count = 1;
-    const sendID = async () => {
-       const res = await fetch("/detail",{
-        method:'POST',
-        headers:{
-            'Content-Type':"application/json"
-        },
-        body:JSON.stringify({id:props.dataNumber})
-       })
-    //    const data = await res.json()
-    //    console.log(data);
-    }
+    // let count = 1;
+    // const sendID = async () => {
+    //     const res = await fetch("/detail", {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': "application/json"
+    //         },
+    //         body: JSON.stringify({ id: props.dataNumber })
+    //     })
+    //     //    const data = await res.json()
+    //     //    console.log(data);
+    // }
 
 
-    useEffect(async()=>{
-        if (count) {
-            await sendID()
-            console.log('called fetch function');
-            count--;
-        }
-    },[])
+    // useEffect(async () => {
+    //     if (count) {
+    //         await sendID()
+    //         console.log('called fetch function');
+    //         count--;
+    //     }
+    // }, [])
 
     var deletes = document.querySelectorAll(".fa-trash");
     console.log(deletes);
@@ -58,6 +58,9 @@ const Detail = (props) => {
         });
     }
 
+    const uploadFile = (e)=>{
+        console.log("resrdf f");
+    }
 
     console.log("hello");
     // console.log(s);
@@ -93,11 +96,11 @@ const Detail = (props) => {
                     <p className="title">Name:-Ayush Patel</p>
                 </div>
 
-                <Phase idx={1} inputFile={getimage} />
-                <Phase idx={2} inputFile={getimage} />
-                <Phase idx={3} inputFile={getimage} />
-                <Phase idx={4} inputFile={getimage} />
-                <Phase idx={5} inputFile={getimage} />
+                <Phase idx={1} inputFile={getimage} statusColor="darkgreen" />
+                <Phase idx={2} inputFile={getimage} statusColor="gray"/>
+                <Phase idx={3} inputFile={getimage} statusColor="gray"/>
+                <Phase idx={4} inputFile={getimage} statusColor="green"/>
+                <Phase idx={5} inputFile={getimage} statusColor="green"/>
             </div>
 
             {/* <footer className="bg-light text-center text-lg-start ftp">

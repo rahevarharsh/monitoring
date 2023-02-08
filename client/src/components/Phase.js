@@ -11,7 +11,7 @@ const Phase = (props) => {
                     <h5 className="card-title">PHASE-{props.idx}</h5>
                     <i className="fa-regular fa-circle-check icn-c" style={{
                         paddingTop: "1.5px",
-                        fontSize: "1.4rem", color: "green"
+                        fontSize: "1.4rem", color:  props.statusColor 
                     }}></i>
                 </div>
                 <div className="card-content">
@@ -32,7 +32,7 @@ const Phase = (props) => {
                             <i className="fa-solid fa-upload icn"></i>
                         </label>
                         <input type="file" id={props.idx} style={{ display: "none", visibility: "none" }}
-                             onChange={props.inputFile} /> 
+                            onChange={props.inputFile} />
 
                         <div id="display-name" style={{ width: "max-content", display: "flex", columnGap: "5px" }}></div>
                     </div>
