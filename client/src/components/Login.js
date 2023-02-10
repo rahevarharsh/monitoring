@@ -94,6 +94,7 @@ const Login = () => {
 										</div>
 
 									</form>
+									
 								</div>
 							</div>
 							<div className="footer">

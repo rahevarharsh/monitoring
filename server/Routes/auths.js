@@ -14,9 +14,18 @@ const dataInsertionNodal = require('../TestCase/nodal_data');
 const dataInsertionPolice = require('../TestCase/police_data');
 const getNotification = require('../Func/getNotification');
 const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './upload');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+
+
 var useID = "";
 var otpPars = 0;
 let RollNameGlob
@@ -261,40 +270,8 @@ Router.get("/pipage", authenticationOfficer, async (req, res) => {
         res.send(caseArr)
     })
 
-    // console.log(caseIDList);
-    // let caseList = await getNotification(req,caseIDList)
-    // for (let index = 0; index < caseIDList.length; index++) {
-    //     parserArr[index] = {
-    //         just: caseList[index],
-    //         test_no: caseIDList[index]
-    //     }
-    // }
-    // // console.log(await case_schema.find({case_id:caseIDList[0]}))
-    // req.test = [{
-    //     just: ["this is the test", "test2", 'test3'],
-    //     test_no: 123645
-    // },
-    // {
-    //     just: ["inspect fast", "send photos", 'upload raguler'],
-    //     test_no: 123646
-    // }
-    //     ,
-    // {
-    //     just: ["fsdfsdf", "ewrsdf sdferse", 'ersadf sdaersar', 'loream is the fourth filed'],
-    //     test_no: 123647
-    // }
-    // ]
-    // req.parserArr = parserArr
-    // dataForSend = [req.root_user, caseList]
 
-    // // console.log(dataForSend);
-    // console.log("fkjshdfj")
-    // console.log(parserArr)
-    // console.log('END');
-    // console.log(req.parseArr);
-    //  res.send(c)
 })
-
 
 
 
@@ -308,10 +285,14 @@ Router.get("/nodalpage", authenticationNodal, (req, res) => {
     res.send("hello world!")
 })
 
-Router.post('/api/pdf', (req, res) => {
-    const pdf = req.file;
-    console.log(pdf);
-    // process the pdf file
-  });
+Router.post('/pdf', upload.single('pdf'), (req, res) => {
+    console.log(req.file);
+    console.log(req.body.pdf);
+    res.send(req.file)
+});
+
+Router.get('/pdf',(req,res)=>{
+    res.sendFile(path.join(__dirname, './upload/cs.pdf'))
+})
 
 module.exports = Router
